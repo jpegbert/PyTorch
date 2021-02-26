@@ -48,8 +48,28 @@ print(b.squeeze(-4).shape) # torch.Size([32, 1, 1])
 a = torch.rand(4, 32, 14, 14)
 print(b.shape) # torch.Size([1, 32, 1, 1])
 print(b.expand(4, 32, 14, 14).shape) # torch.Size(4, 32, 14, 14)
+print(b.expand(-1, 32, -1, -1).shape) # torch.Size(1, 32, 1, 1)
+print(b.expand(-1, 32, -1, -4).shape) # torch.Size(1, 32, 1, -4)
 
+# repeat
+print(b.shape) # torch.Size([1, 32, 1, 1])
+print(b.repeat(4, 32, 1, 1).shape) # torch.Size([4, 1024, 1, 1])
+print(b.repeat(4, 1, 1, 1).shape) # torch.Size([4, 32, 1, 1])
+print(b.repeat(4, 1, 32, 32).shape) # torch.Size([4, 32, 32, 32])
 
+# transpose
+print(a.shape) # [4, 3, 32, 32]
+a1 = a.transpose(1, 3).contiguous().view(4, 3 * 32 * 32).view(4, 3, 32, 32)
+a2 = a.transpose(1, 3).contiguous().view(4, 3 * 32 * 32).view(4, 32, 32, 3).transpose(1, 3)
+print(a1.shape, a2.shape) # torch.Size(4, 3, 32, 32) torch.Size(4, 3, 32, 32)
+print(torch.all(torch.eq(a, a1))) # tensor(0, dtype=torch.uint8)
+print(torch.all(torch.eq(a, a2))) # tensor(1, dtype=torch.uint8)
 
-
+# permute
+a = torch.rand(4, 3, 28, 28)
+print(a.transpose(1, 3).shape) # torch.Size(4, 28, 28, 3)
+b = torch.rand(4, 3, 28, 32)
+print(b.transpose(1, 3).shape) # torch.Size(4, 32, 28, 3)
+print(b.transpose(1, 3).transpose(1, 2).shape) # torch.Size([4, 28, 32, 3])
+print(b.permute(0, 2, 3, 1).shape) # torch.Size([4, 28, 32, 3])
 
