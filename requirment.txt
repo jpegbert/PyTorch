@@ -1,0 +1,3 @@
+torch                 1.5.0+cpu
+torchvision           0.6.0+cpu
+pip install visdom -i https://pypi.tuna.tsinghua.edu.cn/simple
