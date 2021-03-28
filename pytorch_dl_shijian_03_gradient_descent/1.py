@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 """
 https://blog.csdn.net/bit452/article/details/109637108
+随机梯度下降，每个样本进行一次梯度下降
 """
 
 

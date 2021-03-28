@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 """
 https://blog.csdn.net/bit452/article/details/109637108
+梯度下降 使用全部数据进行梯度下降
 """
 
 
