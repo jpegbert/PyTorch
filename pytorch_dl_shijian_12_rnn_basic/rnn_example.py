@@ -33,6 +33,7 @@ class Model(nn.Module):
         self.rnn = nn.RNN(input_size=self.input_size, hidden_size=self.hidden_size, )
 
     def forward(self, inputs):
+        # hidden的维度是(num_layers, batch_size, hidden_size)
         hidden = torch.zeros(self.num_layers, self.batch_size, self.hidden_size)
         out, _ = self.rnn(inputs, hidden)    # 注意维度是(seqLen, batch_size, hidden_size)
         return out.view(-1, self.hidden_size) # 为了容易计算交叉熵这里调整维度为(seqLen * batch_size, hidden_size)
@@ -47,6 +48,7 @@ epochs = 15
 
 for epoch in range(epochs):
     optimizer.zero_grad()
+    # inputs的形状是 [seqLen, batchSize, inputSize]
     outputs = net(inputs)
     # print(outputs.shape, labels.shape)
     # 这里的outputs维度是([seqLen * batch_size, hidden]), labels维度是([seqLen])
