@@ -16,7 +16,7 @@ one_hot_lookup = [[1, 0, 0, 0],
                   [0, 0, 0, 1]]
 x_one_hot = [one_hot_lookup[x] for x in x_data] # (seqLen, inputSize)
 
-inputs = torch.Tensor(x_one_hot).view(-1, batch_size, input_size)
+inputs = torch.Tensor(x_one_hot).view(-1, batch_size, input_size) # (seqLen, batchSize, inputSize)
 labels = torch.LongTensor(y_data).view(-1, 1)   # torch.Tensor默认是torch.FloatTensor是32位浮点类型数据，torch.LongTensor是64位整型
 print(inputs.shape, labels.shape)
 
@@ -48,11 +48,13 @@ for epoch in range(epochs):
     optimizer.zero_grad()
     hidden = net.init_hidden()
     print('Predicted string:', end='')
+    # inputs的维度是 [seqLen, batchSize, inputSize], input的维度是 [batchSize, inputSize]
+    # labels的维度是 [seqLen, 1], label的维度是[1]
     for input, label in zip(inputs, labels):
         hidden = net(input, hidden)
         # 注意交叉熵在计算loss的时候维度关系，这里的hidden是([1, 4]), label是 ([1])
         loss += criterion(hidden, label)
-        _, idx = hidden.max(dim = 1)
+        _, idx = hidden.max(dim=1)
         print(idx2char[idx.item()], end='')
     loss.backward()
     optimizer.step()
