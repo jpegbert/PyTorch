@@ -1,13 +1,10 @@
-import  torch
-from    torch import nn
-from    torch.nn import functional as F
-from    torch import optim
-
-import  torchvision
-from    matplotlib import pyplot as plt
-
-from    utils import plot_image, plot_curve, one_hot
-
+import torch
+from torch import nn
+from torch.nn import functional as F
+from torch import optim
+import torchvision
+from matplotlib import pyplot as plt
+from utils import plot_image, plot_curve, one_hot
 
 
 batch_size = 512
@@ -36,12 +33,9 @@ print(x.shape, y.shape, x.min(), x.max())
 plot_image(x, y, 'image sample')
 
 
-
 class Net(nn.Module):
-
     def __init__(self):
         super(Net, self).__init__()
-
         # xw+b
         self.fc1 = nn.Linear(28*28, 256)
         self.fc2 = nn.Linear(256, 64)
@@ -55,9 +49,7 @@ class Net(nn.Module):
         x = F.relu(self.fc2(x))
         # h3 = h2w3+b3
         x = self.fc3(x)
-
         return x
-
 
 
 net = Net()
@@ -68,9 +60,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
 train_loss = []
 
 for epoch in range(3):
-
     for batch_idx, (x, y) in enumerate(train_loader):
-
         # x: [b, 1, 28, 28], y: [512]
         # [b, 1, 28, 28] => [b, 784]
         x = x.view(x.size(0), 28*28)
@@ -88,7 +78,7 @@ for epoch in range(3):
 
         train_loss.append(loss.item())
 
-        if batch_idx % 10==0:
+        if batch_idx % 10 == 0:
             print(epoch, batch_idx, loss.item())
 
 plot_curve(train_loss)
@@ -96,8 +86,8 @@ plot_curve(train_loss)
 
 
 total_correct = 0
-for x,y in test_loader:
-    x  = x.view(x.size(0), 28*28)
+for x, y in test_loader:
+    x = x.view(x.size(0), 28*28)
     out = net(x)
     # out: [b, 10] => pred: [b]
     pred = out.argmax(dim=1)
@@ -112,8 +102,4 @@ x, y = next(iter(test_loader))
 out = net(x.view(x.size(0), 28*28))
 pred = out.argmax(dim=1)
 plot_image(x, pred, 'test')
-
-
-
-
 
